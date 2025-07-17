@@ -114,3 +114,231 @@ const LandingPage = () => {
 
 export default LandingPage;
 
+//      import React from 'react';
+
+// // Import images
+// import soilTestingImg from '../assets/services/soil-testing.jpg';
+// import irrigationImg from '../assets/services/irrigation-planning.jpg';
+// import cropAdvisoryImg from '../assets/services/crop-advisory.jpg';
+// import farmMechImg from '../assets/services/farm-mechanization.jpg';
+// import organicFertImg from '../assets/services/organic-fertilizers.jpg';
+// import pestMgmtImg from '../assets/services/pest-management.jpg';
+// import farmTrainingImg from '../assets/services/farm-training.jpg';
+// import marketLinkImg from '../assets/services/market-linkages.jpg';
+// import cropInsuranceImg from '../assets/services/crop-insurance.jpg';
+// import sustainableFarmingImg from '../assets/services/sustainable-farming.jpg';
+
+// const services = [
+//   {
+//     id: 1,
+//     title: 'Soil Testing & Analysis',
+//     description: 'Accurate soil testing to help optimize crop yields and sustainable farming.',
+//     image: soilTestingImg,
+//   },
+//   {
+//     id: 2,
+//     title: 'Irrigation Planning',
+//     description: 'Design and implementation of efficient irrigation systems.',
+//     image: irrigationImg,
+//   },
+//   {
+//     id: 3,
+//     title: 'Crop Advisory',
+//     description: 'Expert guidance on crop selection, pest control, and harvesting techniques.',
+//     image: cropAdvisoryImg,
+//   },
+//   {
+//     id: 4,
+//     title: 'Farm Mechanization',
+//     description: 'Providing machinery to improve efficiency.',
+//     image: farmMechImg,
+//   },
+//   {
+//     id: 5,
+//     title: 'Organic Fertilizers',
+//     description: 'Supply and consultation on organic fertilizers.',
+//     image: organicFertImg,
+//   },
+//   {
+//     id: 6,
+//     title: 'Pest Management',
+//     description: 'Sustainable pest control methods.',
+//     image: pestMgmtImg,
+//   },
+//   {
+//     id: 7,
+//     title: 'Farm Training',
+//     description: 'Workshops and hands-on training for farmers.',
+//     image: farmTrainingImg,
+//   },
+//   {
+//     id: 8,
+//     title: 'Market Linkages',
+//     description: 'Connecting farmers with buyers and markets.',
+//     image: marketLinkImg,
+//   },
+//   {
+//     id: 9,
+//     title: 'Crop Insurance',
+//     description: 'Protection plans for crop loss.',
+//     image: cropInsuranceImg,
+//   },
+//   {
+//     id: 10,
+//     title: 'Sustainable Farming',
+//     description: 'Guidance on eco-friendly agricultural practices.',
+//     image: sustainableFarmingImg,
+//   },
+// ];
+
+// const Services = () => {
+//   return (
+//     <div className="container mt-5">
+//       <h2>Our Agricultural Services</h2>
+//       <div className="row">
+//         {services.map(service => (
+//           <div key={service.id} className="col-md-6 col-lg-4 mb-4">
+//             <div className="card h-100 shadow-sm">
+//               <img
+//                 src={service.image}
+//                 className="card-img-top"
+//                 alt={service.title}
+//                 style={{ objectFit: 'cover', height: '200px' }}
+//               />
+//               <div className="card-body">
+//                 <h5 className="card-title">{service.title}</h5>
+//                 <p className="card-text">{service.description}</p>
+//               </div>
+//             </div>
+//           </div>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Services;
+
+// import React, { useState } from 'react';
+
+// const ContactUs = () => {
+//   const [formData, setFormData] = useState({
+//     firstName: '',
+//     lastName: '',
+//     email: '',
+//     subject: '',
+//     message: ''
+//   });
+
+//   const [submitted, setSubmitted] = useState(false);
+
+//   const handleChange = (e) => {
+//     setFormData(prev => ({
+//       ...prev,
+//       [e.target.name]: e.target.value
+//     }));
+//   };
+
+//   const handleSubmit = (e) => {
+//     e.preventDefault();
+//     console.log('Form data submitted:', formData);
+//     setSubmitted(true);
+//     setFormData({ firstName: '', lastName: '', email: '', subject: '', message: '' });
+//   };
+
+//   return (
+//     <div className="container mt-5" style={{ maxWidth: '600px' }}>
+//       <h2>Contact Us</h2>
+
+//       {submitted && (
+//         <div className="alert alert-success" role="alert">
+//           Thank you for reaching out! We will get back to you soon.
+//         </div>
+//       )}
+
+//       <form onSubmit={handleSubmit}>
+//         {/* Row for First Name and Last Name */}
+//         <div className="row mb-3">
+//           <div className="col">
+//             <label htmlFor="firstName" className="form-label">First Name *</label>
+//             <input
+//               type="text"
+//               id="firstName"
+//               name="firstName"
+//               className="form-control"
+//               value={formData.firstName}
+//               onChange={handleChange}
+//               required
+//               placeholder="First Name"
+//             />
+//           </div>
+//           <div className="col">
+//             <label htmlFor="lastName" className="form-label">Last Name *</label>
+//             <input
+//               type="text"
+//               id="lastName"
+//               name="lastName"
+//               className="form-control"
+//               value={formData.lastName}
+//               onChange={handleChange}
+//               required
+//               placeholder="Last Name"
+//             />
+//           </div>
+//         </div>
+
+//         {/* Email */}
+//         <div className="mb-3">
+//           <label htmlFor="email" className="form-label">Email *</label>
+//           <input
+//             type="email"
+//             id="email"
+//             name="email"
+//             className="form-control"
+//             value={formData.email}
+//             onChange={handleChange}
+//             required
+//             placeholder="you@example.com"
+//           />
+//         </div>
+
+//         {/* Subject */}
+//         <div className="mb-3">
+//           <label htmlFor="subject" className="form-label">Subject *</label>
+//           <input
+//             type="text"
+//             id="subject"
+//             name="subject"
+//             className="form-control"
+//             value={formData.subject}
+//             onChange={handleChange}
+//             required
+//             placeholder="Subject of your message"
+//           />
+//         </div>
+
+//         {/* Message */}
+//         <div className="mb-3">
+//           <label htmlFor="message" className="form-label">Message *</label>
+//           <textarea
+//             id="message"
+//             name="message"
+//             className="form-control"
+//             rows="5"
+//             value={formData.message}
+//             onChange={handleChange}
+//             required
+//             placeholder="Write your message here..."
+//           ></textarea>
+//         </div>
+
+//         <button type="submit" className="btn btn-primary w-100">Send Message</button>
+//       </form>
+//     </div>
+//   );
+// };
+
+// export default ContactUs;
+
+
+
