@@ -1,35 +1,93 @@
-import React from 'react';
-import '../styles/nav.css';
-import logo from '../images/logo.png'
-import { Link } from 'react-router-dom';
-import { NavDropdown } from 'react-bootstrap';
+// import React from 'react';
+// import '../styles/nav.css';
 
-function Navbar() {
-  return (
-    <nav className="navbar">
+// import { Link } from 'react-router-dom';
+
+// function Navbar() {
+//   return (
+//     <nav className="navbar">
       
-       <img
-          src={logo}
-          alt="Yucca Logo"     style={{ height: '40px', width: 'auto', marginRight: '100px' }}
-        />
-      <ul className="navbar-links">
-        <li><Link to="/">Home</Link></li>
-        
-            <NavDropdown title="About" id="about-dropdown" style={{color:'#366000',fontSize:'x-large',fontWeight:'bolder'}}>
-             <NavDropdown.Item as={Link} to="/story">Our Story</NavDropdown.Item>
-             <NavDropdown.Item as={Link} to="/products">Products</NavDropdown.Item>
-             <NavDropdown.Item as={Link} to="/team">Our Team</NavDropdown.Item>
-             
-             </NavDropdown>
-        {/* <li><Link to="/about">About</Link></li> */}
-        <li><a href="/services">Services</a></li>
-        <li><a href="/contact">Contact</a></li>
+//        <img
+//           src={logo}
+//           alt="Yucca Logo"     style={{ height: '40px', width: 'auto', marginRight: '100px' }}
+//         />
+//       <ul className="navbar-links">
+//         <li><Link to="/">Home</Link></li>
+//         <li><Link to="/about">About</Link></li>
+//         <li><a href="/services">Services</a></li>
+//         <li><a href="/contact">Contact</a></li>
+//       </ul>
+//     </nav>
+//   );
+// }
+
+// export default Navbar;
+
+import React from 'react';
+import { Link } from 'react-router-dom';
+import logo from '../images/logo.png';
+
+const NavbarComponent = () => {
+  return (
+    <nav style={styles.navbar}>
+      <div style={styles.logoContainer}>
+        <Link to="/">
+          <img
+            src={logo}
+            alt="Yucca Logo"
+            style={styles.logo}
+          />
+        </Link>
+      </div>
+      <ul style={styles.navLinks}>
+        <li><Link to="/" style={styles.link}>Home</Link></li>
+        <li><Link to="/about" style={styles.link}>About</Link></li>
+        <li><Link to="/services" style={styles.link}>Services</Link></li>
+        <li><Link to="/contact" style={styles.link}>Contact</Link></li>
       </ul>
     </nav>
   );
-}
+};
 
-export default Navbar;
+const styles = {
+  navbar: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: '10px 40px',
+    backgroundColor: '#E0EAE2',  // your greenish brand color or any color you prefer
+    color: '#366000',
+    justifyContent: 'space-between',
+    boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+    fontWeight:'bolder',
+  },
+  logoContainer: {
+    flexShrink: 0,
+  },
+  logo: {
+    height: '80px',
+    width: 'auto',
+  },
+  navLinks: {
+    listStyle: 'none',
+    display: 'flex',
+    gap: '30px',
+    margin: 0,
+    padding: 0,
+    
+   
+  },
+  link: {
+    color: '#366000',
+    textDecoration: 'none',
+    fontWeight: 'bolder',
+    fontSize: '16px',
+  },
+};
+
+export default NavbarComponent;
+
+
+
 
 // import React from 'react';
 // import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';

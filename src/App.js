@@ -1,34 +1,54 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import './App.css';
-import Nav from './components/nav';
-import Home from './components/Home';
-import About from './components/About';
-import Contact from './components/contact'
-import Story from './components/story'
-import Footer from './components/footer'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import Home from './components/Home';
+import About from './components/About';
+import ContactUs from './components/contact';
+import Services from './components/service';
+import Nav from './components/nav';
+import Footer from './components/footer';
+
+import Adminboard from './admin/adminboard';
+import AddUser from './admin/pages/AddUser';
+import ShowUsers from './admin/pages/ShowUsers';
+
+function AppWrapper() {
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith('/admin');
+
+  return (
+    <>
+      {!isAdminRoute && <Nav />}
+
+      <div className={!isAdminRoute ? 'container mt-4' : 'p-0'}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/contact" element={<ContactUs />} />
+
+          {/* Admin dashboard and nested routes */}
+          <Route path="/admin/*" element={<Adminboard />}>
+            <Route path="add-user" element={<AddUser />} />
+            <Route path="show-user" element={<ShowUsers />} />
+          </Route>
+        </Routes>
+      </div>
+
+      {!isAdminRoute && <Footer />}
+    </>
+  );
+}
 
 function App() {
   return (
     <Router>
-      <div className="App">
-        <Nav />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-           <Route path="/story" element={<Story />} />
-          <Route path="/contact" element={<Contact/>} />
-        </Routes>
-      </div>
-      <div> <Footer /> </div>
+      <AppWrapper />
     </Router>
   );
 }
 
 export default App;
-
-
-
-
 

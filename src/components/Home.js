@@ -1,116 +1,223 @@
-// import React from 'react';
-// import background from '../images/backgrd.jpeg';
-
-
-
-
-// function Home() {
-//   return (
-//     <div
-//       style={{
-//         top:'-5 rem',
-//         backgroundImage: `url(${background})`,
-//         backgroundRepeat: 'no-repeat',
-//         backgroundSize: '100% 100%',
-//         backgroundPosition: 'center',
-//         height: '100vh',  
-//         width: '100vw',
-//         margin: '0',
-//         paddingTop:'3rem'
-//       }}
-//     >
-//       <h1 style={{ fontSize: '3rem', marginBottom: '10px',color:'white' }}>Yucca Consulting Limited</h1>
-//       <h2 style={{ fontSize: '1.5rem', fontWeight: 'normal', marginBottom: '50px', color:'white' }}>
-//         Cultivating a Sustainable World
-//       </h2>
-//        <p style={{ maxWidth: '600px', fontSize: '1.2rem',color:'white' , margin: '50px auto 0',textAlign:"center"}}>
-//         Empowering Farmers. Growing Communities.<br></br>
-//         we provide  agricultural support from crop management to market access, 
-//         help smallholder farmers thrive .
-//       </p>
-
-//       <button
-   
-//     style={{
-//       marginTop: '90px',
-//       backgroundColor: '#366000',
-//       color: 'white',
-//       padding: '10px 16px',
-//       border: 'none',
-//       borderRadius: '10px',
-//       fontSize: '16px',
-//       cursor: 'pointer'
-//     }}
-//   >
-//     Get Started
-//   </button>
-
-//     </div>
-
-//   );
-// }
-
-// export default Home;
- 
 
 import React from 'react';
-import { Carousel } from 'react-bootstrap';
+import { Container, Row, Col, Card, Carousel } from 'react-bootstrap';
 import { Typewriter } from 'react-simple-typewriter';
-import slide1 from '../images/backgrd.jpeg';
-import slide2 from '../images/cows.jpg';
-import slide3 from '../images/image1.jpeg';
-import slide4 from '../images/image2.jpg';
+import image2 from '../images/image2.jpg';
+import ser from '../images/ser.jpg';
+import goats from '../images/goats.jpg';
+import postharvest from '../images/posthavest.jpg';
+import man from '../images/man.jpg';
+import food from '../images/food.jpg';
+import irrigation from '../images/irrigation.jpg';
+// import value from '../images/value.jpeg';
 
 const Home = () => {
   return (
-    <Carousel fade interval={3000}>
-      {/* Slide 1 with typewriter text */}
-      <Carousel.Item>
-        <img className="d-block w-100" src={slide1} alt="First slide" />
-        <Carousel.Caption>
-          <h3>
-            <Typewriter
-              words={['Yucca Consulting Limited']}
-              loop={1}
-              cursor
-              cursorStyle=""
-              typeSpeed={70}
+    <div>
+      {/* Hero Section with Carousel */}
+      <Carousel fade controls={false} indicators interval={2500}>
+        {[image2, man, food].map((img, index) => (
+          <Carousel.Item key={index}>
+            <div
+              style={{
+                backgroundImage: `url(${img})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                height: '85vh',
+                position: 'relative',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'white',
+              }}
+            >
+              {/* Transparent Overlay Rectangle */}
+              <div
+                className="p-4 text-center"
+                style={{
+                  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                  borderRadius: '10px',
+                  maxWidth: '900px',
+                  padding: '30px',
+                }}
+              >
+                <h1 className="fw-bold mb-3" style={{ fontSize: '3rem' }}>
+                  {index === 0 ? (
+                       <Typewriter
+               words={['Yucca Consulting Limited']}
+               loop={1}
+               cursor
+               cursorStyle=""
+               typeSpeed={70}
               deleteSpeed={0}
-              delaySpeed={1000}
-            />
-          </h3>
-          <p>Cultivating a sustainable world</p>
-        </Carousel.Caption>
-      </Carousel.Item>
+               delaySpeed={1000}
+             />
+                  ) : (
+                    ''
+                  )}
+                </h1>
+                <p className="fst-italic fs-4">Cultivating a sustainable world</p>
+                <p style={{ fontSize: '1.1rem' }}>
+                
+                </p>
+               
+              </div>
+            </div>
+          </Carousel.Item>
+        ))}
+      </Carousel>
 
-      {/* Slide 2 */}
-      <Carousel.Item>
-        <img className="d-block w-100" src={slide2} alt="Second slide" />
-        <Carousel.Caption>
-          <h3>Innovative Products</h3>
-          <p>Explore our range of powerful and smart products.</p>
-        </Carousel.Caption>
-      </Carousel.Item>
+      {/* Intro */}
+     {/* Intro Section with image and overlapping text box */}
+<Container fluid className="my-5">
+  <Row className="align-items-center justify-content-center">
+    <Col
+      md={6}
+      className="position-relative"
+      style={{ zIndex: 2 }}
+    >
+      <div
+        className="p-4"
+        style={{
+          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+          borderRadius: '15px',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+          position: 'relative',
+          marginLeft: '2rem',
+          marginRight: '-4rem',
+        }}
+      >
+        <h5 className="fst-italic mb-2" style={{ color: '#366000' }}>
+          We are your agricultural partner
+        </h5>
+        <p style={{ fontSize: '1.1rem' }}>
+          Empowering farmers, communities, organizations to adopt sustainable
+          practices, technologies and innovations that drive economic growth,
+          environmental stewardship and social well-being.
+        </p>
+      </div>
+    </Col>
+    <Col md={6}>
+      <img
+        src={irrigation} // You can use any image you'd like
+        alt="Farming Support"
+        className="img-fluid rounded-4"
+        style={{
+          maxHeight: '400px',
+          objectFit: 'cover',
+          width: '100%',
+        }}
+      />
+    </Col>
+  </Row>
+</Container>
 
-      {/* Slide 3 */}
-      <Carousel.Item>
-        <img className="d-block w-100" src={slide3} alt="Third slide" />
-        <Carousel.Caption>
-          <h3>Meet Our Team</h3>
-          <p>Driven by passion and powered by creativity.</p>
-        </Carousel.Caption>
-      </Carousel.Item>
 
-      {/* Slide 4 */}
-      <Carousel.Item>
-        <img className="d-block w-100" src={slide4} alt="Fourth slide" />
-        <Carousel.Caption>
-          <h3>Partner With Us</h3>
-          <p>Let’s grow together through meaningful collaboration.</p>
-        </Carousel.Caption>
-      </Carousel.Item>
-    </Carousel>
+      {/* Dealers In */}
+      <Container className="my-5 text-center">
+        <h4 className="fw-bold" style={{ borderBottom: '3px solid #366000', display: 'inline-block', paddingBottom: '5px' }}>
+          Dealers in
+        </h4>
+        <Row className="mt-4 g-4 justify-content-center">
+          {[{ img: ser, title: 'Soil Fertility', text: 'Improves soil fertility through sustainable farming practices.' },
+            { img: goats, title: 'Breeding Practices', text: 'Advises on best breeds for environment and goals.' },
+            { img: postharvest, title: 'Post-harvest', text: 'Improves post-harvest processes to reduce loss and enhance quality.' }].map((item, idx) => (
+              <Col md={4} sm={6} key={idx}>
+                <Card className="p-3 h-100 rounded-3 border-0 shadow-sm animate__animated animate__fadeInUp">
+                  <Card.Img variant="top" src={item.img} style={{ borderRadius: '20px', height: '180px', objectFit: 'cover' }} alt={item.title} />
+                  <Card.Body>
+                    <Card.Title className="fw-bold">{item.title}</Card.Title>
+                    <Card.Text>{item.text}</Card.Text>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+        </Row>
+      </Container>
+
+{/* Our Interventions */}
+<Container className="my-5 text-center">
+  <h4
+    className="fw-bold"
+    style={{
+      borderBottom: '3px solid #366000',
+      display: 'inline-block',
+      paddingBottom: '5px',
+    }}
+  >
+    OUR INTERVENTIONS
+  </h4>
+  <Row className="mt-4 g-4 justify-content-center">
+    {[{
+      img: man,
+      title: 'Strategic commodities',
+      text: 'Provision of planting materials to boost productivity.',
+    },
+    {
+      img: food,
+      title: 'Promoting Food Security',
+      text: 'Ensuring access to adequate food through innovations.',
+    },
+    {
+      img: irrigation,
+      title: 'Irrigation Access',
+      text: 'Providing sustainable water solutions for farming.',
+    }].map((item, i) => (
+      <Col md={4} sm={6} key={i}>
+        <Card className="border-0 h-100 shadow-sm">
+          <Card.Img
+            src={item.img}
+            alt={item.title}
+            style={{
+              height: '250px',
+              objectFit: 'cover',
+              borderTopLeftRadius: '12px',
+              borderTopRightRadius: '12px',
+            }}
+          />
+          <div
+            className="text-white text-start px-3 py-3"
+            style={{
+              backgroundColor: '#366000',
+              borderBottomLeftRadius: '12px',
+              borderBottomRightRadius: '12px',
+            }}
+          >
+            <h5 className="fw-bold mb-1">{item.title}</h5>
+            <p className="mb-0">{item.text}</p>
+          </div>
+        </Card>
+      </Col>
+    ))}
+  </Row>
+</Container>
+
+
+      {/* Partners */}
+      <Container className="my-5 text-center">
+        <h4 className="fw-bold" style={{ borderBottom: '3px solid #366000', display: 'inline-block', paddingBottom: '5px' }}>
+          OUR PARTNERS
+        </h4>
+        <Row className="mt-4">
+          <Col md={6} className="fw-bold">
+            <p>BLESSED TREE PLANTER AND AGRO DISTRIBUTORS LTD</p>
+            <p>NEST AGRO CONSULTING LTD</p>
+          </Col>
+          <Col md={6} className="fw-bold">
+            <p>SPROUTING LILIES ENTERPRISES LTD</p>
+            <p>TERICHA FARMERS COOPERATIVE</p>
+          </Col>
+        </Row>
+      </Container>
+    </div>
   );
 };
 
 export default Home;
+
+
+
+
+
+
+
