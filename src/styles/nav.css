@@ -1,10 +1,10 @@
-.navbar {
+/* .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: #E0EAE2;
   /* padding: 10rem 10rem; */
-  position: fixed;
+  /* position: fixed;
   z-index: 1000;
 }
 
@@ -20,8 +20,8 @@
   margin: 0;
   padding: 0;
   
-}
-
+} */
+/* 
 .navbar-links li a {
   text-decoration: none;
   font-weight: bolder;
@@ -32,4 +32,4 @@
 .navbar-links li a:hover {
   color: black;
   text-decoration: underline;
-}
+} */ 

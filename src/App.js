@@ -9,6 +9,7 @@ import ContactUs from './components/contact';
 import Services from './components/service';
 import Nav from './components/nav';
 import Footer from './components/footer';
+import Booking from './components/Booking';
 
 import Adminboard from './admin/adminboard';
 import AddUser from './admin/pages/AddUser';
@@ -28,6 +29,8 @@ function AppWrapper() {
           <Route path="/about" element={<About />} />
           <Route path="/services" element={<Services />} />
           <Route path="/contact" element={<ContactUs />} />
+          <Route path="/contact" element={<Booking />} />
+
 
           {/* Admin dashboard and nested routes */}
           <Route path="/admin/*" element={<Adminboard />}>
