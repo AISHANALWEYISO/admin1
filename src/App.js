@@ -12,6 +12,7 @@ import OurTeam from './components/team';
 import Nav from './components/nav';
 // import Booking from './components/booking'
 import Footer from './components/footer';
+import Booking from './components/Booking';
 
 import Adminboard from './admin/adminboard';
 // import AddUser from './admin/pages/AddUser';
@@ -32,9 +33,7 @@ function AppWrapper() {
           <Route path="/products" element={<Products />} />
           <Route path="/our-team" element={<OurTeam />} /> 
           <Route path="/services" element={<Services />} />
-          <Route path="/contact" element={<ContactUs />} />
-          {/* <Route path="/booking" element={<Booking />} /> */}
-         
+          <Route path="/contact" element={<ContactUs />} />         
 
           {/* Admin dashboard and nested routes */}
          <Route path="/admin/*" element={<Adminboard />}>

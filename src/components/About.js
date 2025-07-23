@@ -1,11 +1,11 @@
-
-
-
 import React from 'react';
 import { Container, Row, Col, Image, Card } from 'react-bootstrap';
 import image from'../images/image1.jpeg'
 import image3 from '../images/image3.jpeg'
 import cows from '../images/cows.jpg'
+
+
+
 const About = () => {
   return (
     <Container className="mt-5">
