@@ -1,32 +1,31 @@
 import React from 'react';
-import { Button, Table } from 'react-bootstrap';
+import { Table, Button } from 'react-bootstrap';
 import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 
-const Products = () => {
-  // You can add state and API calls here later for full CRUD
+const Farmers = () => {
   return (
     <div>
-      <h2>Manage Products</h2>
+      <h2>Manage Farmers</h2>
       <Button variant="success" className="mb-3">
-        <FaPlus /> Add Product
+        <FaPlus /> Add Farmer
       </Button>
       <Table striped bordered hover>
         <thead>
           <tr>
             <th>#</th>
             <th>Name</th>
-            <th>Type</th>
-            <th>Stock</th>
+            <th>Location</th>
+            <th>Contact</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {/* Replace with dynamic rows */}
+          {/* Example row */}
           <tr>
             <td>1</td>
-            <td>Sample Product</td>
-            <td>Type A</td>
-            <td>100</td>
+            <td>Jane Smith</td>
+            <td>Gulu</td>
+            <td>+256 700 000000</td>
             <td>
               <Button variant="warning" size="sm" className="me-2"><FaEdit /></Button>
               <Button variant="danger" size="sm"><FaTrash /></Button>
@@ -38,4 +37,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default Farmers;

@@ -1,41 +1,45 @@
-// import React from "react";
-// import 'bootstrap/dist/css/bootstrap.min.css';
+import React from 'react';
+import { Routes, Route, Navigate} from 'react-router-dom';
+import Sidebar from '../admin/pages/Sidebar';
+import AddUser from '../admin/pages/AddUser';
+import ShowUsers from '../admin/pages/ShowUsers';
+import Products from '../admin/pages/products';
+import Services from '../admin/pages/services';
+import Bookings from '../admin/pages/bookings';
+import Farmers from '../admin/pages/farmers';
 
-
-// const Adminboard = () => {
-//   return (
-//     <div>
-//       <h1>Welcome to the Admin Dashboard</h1>
-//     </div>
-//   );
-// };
-
-// export default Adminboard; 
-import React from "react";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Sidebar from "../admin/pages/Sidebar";
-import AddUser from "../admin/pages/AddUser";
-import ShowUsers from "../admin/pages/ShowUsers";
-import { Routes, Route } from 'react-router-dom';
-import Products from '../admin/pages/products'
-
-
+const DashboardHome = () => (
+  <div>
+    <h2>Welcome to the Admin Dashboard</h2>
+  </div>
+);
 
 const Adminboard = () => {
+
+
+// Inside Adminboard component:
+const token = localStorage.getItem('token');
+if (!token) {
+  // redirect to login if no token
+  return <Navigate to="/login" replace />;
+}
+
   return (
     <div className="d-flex">
       <Sidebar />
-      <div className="w-100 p-4">
+      <main className="w-100 p-4" style={{ backgroundColor: '#f8f9fa', minHeight: '100vh' }}>
         <Routes>
-          <Route path="/" element={<h2>Welcome to the Admin Dashboard</h2>} />
-          <Route path="/add-user" element={<AddUser />} />
-          <Route path="/show-users" element={<ShowUsers />} />
+          <Route path="/" element={<DashboardHome />} />
+          <Route path="add-user" element={<AddUser />} />
+          <Route path="show-user" element={<ShowUsers />} />
           <Route path="products" element={<Products />} />
+          <Route path="services" element={<Services />} />
+          <Route path="bookings" element={<Bookings />} />
+          <Route path="farmers" element={<Farmers />} />
         </Routes>
-      </div>
+      </main>
     </div>
   );
 };
 
 export default Adminboard;
-
