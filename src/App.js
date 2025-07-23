@@ -7,6 +7,8 @@ import Home from './components/Home';
 import About from './components/About';
 import ContactUs from './components/contact';
 import Services from './components/service';
+import Products from './components/products';
+import OurTeam from './components/team';
 import Nav from './components/nav';
 import Footer from './components/footer';
 
@@ -26,8 +28,11 @@ function AppWrapper() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/our-team" element={<OurTeam />} /> 
           <Route path="/services" element={<Services />} />
           <Route path="/contact" element={<ContactUs />} />
+         
 
           {/* Admin dashboard and nested routes */}
           <Route path="/admin/*" element={<Adminboard />}>
