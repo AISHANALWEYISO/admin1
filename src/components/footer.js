@@ -53,7 +53,7 @@ const Footer = () => {
           <Col md={5}>
             <h5>Useful Info</h5>
             <ul className="list-unstyled">
-              <li><a href="/story" className="text-white">Our Story</a></li><br></br>
+              <li><a href="/about" className="text-white">Our Story</a></li>
               <li><a href="/services" className="text-white">Services</a></li>
               <li><a href="/contact" className="text-white">Contact</a></li>
             </ul>
