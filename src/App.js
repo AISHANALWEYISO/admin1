@@ -10,11 +10,12 @@ import Services from './components/service';
 import Products from './components/products';
 import OurTeam from './components/team';
 import Nav from './components/nav';
+// import Booking from './components/booking'
 import Footer from './components/footer';
 
 import Adminboard from './admin/adminboard';
-import AddUser from './admin/pages/AddUser';
-import ShowUsers from './admin/pages/ShowUsers';
+// import AddUser from './admin/pages/AddUser';
+// import ShowUsers from './admin/pages/ShowUsers';
 
 function AppWrapper() {
   const location = useLocation();
@@ -32,12 +33,13 @@ function AppWrapper() {
           <Route path="/our-team" element={<OurTeam />} /> 
           <Route path="/services" element={<Services />} />
           <Route path="/contact" element={<ContactUs />} />
+          {/* <Route path="/booking" element={<Booking />} /> */}
          
 
           {/* Admin dashboard and nested routes */}
-          <Route path="/admin/*" element={<Adminboard />}>
-            <Route path="add-user" element={<AddUser />} />
-            <Route path="show-user" element={<ShowUsers />} />
+         <Route path="/admin/*" element={<Adminboard />}>
+        
+          
           </Route>
         </Routes>
       </div>
