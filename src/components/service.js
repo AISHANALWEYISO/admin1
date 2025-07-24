@@ -1,6 +1,6 @@
 // import React from 'react';
-import { Container, Row, Col, Card } from 'react-bootstrap';
-import { motion } from 'framer-motion';
+// // import { Container, Row, Col, Card } from 'react-bootstrap';
+// import { motion } from 'framer-motion';
 
 // // Image imports
 // import farm from '../images/farm managent.jpeg';
