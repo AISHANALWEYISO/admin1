@@ -62,13 +62,13 @@ const Sidebar = () => {
     <div className="bg-dark text-white p-3" style={{ minHeight: '100vh', width: '200px' }}>
       <h4>Admin Panel</h4>
       <ul className="nav flex-column">
-        <li><Link className="nav-link text-white" to="dashboard">Dashboard</Link></li>
-        <li><Link className="nav-link text-white" to="add-user">Add User</Link></li>
-        <li><Link className="nav-link text-white" to="show-user">Show Users</Link></li>
-           <Link className="nav-link text-white" to="/admin/products">Products</Link>
-        <Link className="nav-link text-white" to="/admin/services">Services</Link>
-        <Link className="nav-link text-white" to="/admin/bookings">Bookings</Link>
-        <Link className="nav-link text-white" to="/admin/farmers">Farmers</Link>
+        <li><Link className="nav-link text-white" to="/admin/dashboard">Dashboard</Link></li>
+        <li><Link className="nav-link text-white" to="/admin/add-user">Add User</Link></li>
+        <li><Link className="nav-link text-white" to="/admin/show-user">Show Users</Link></li>
+        <li><Link className="nav-link text-white" to="/admin/products">Products</Link></li>
+        <li><Link className="nav-link text-white" to="/admin/services">Services</Link></li>
+        <li><Link className="nav-link text-white" to="/admin/bookings">Bookings</Link></li>
+        <li><Link className="nav-link text-white" to="/admin/farmers">Farmers</Link></li>
         <li><button onClick={handleLogout} className="btn btn-outline-light mt-3">Sign Out</button></li>
       </ul>
     </div>
@@ -76,3 +76,4 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+

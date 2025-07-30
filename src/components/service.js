@@ -95,81 +95,74 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Card, Button, Row, Col, Container } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Card, Button, Row, Col } from 'react-bootstrap';
-import { Briefcase, BarChart, Globe, Gear, Droplet, Shield, Truck, Layers, People } from 'react-bootstrap-icons';
+import '../styles/services.css'; // Add custom animations here
 
 const services = [
   {
     title: 'Crop Management',
-    icon: <Briefcase size={40} color="#366000" />,
+    image: '/images/services/crop.jpg',
     description: 'Advising on crop selection, planting, irrigation, fertilization, and pest management.',
   },
   {
-    title: 'Soil Analysis and Management',
-    icon: <Layers size={40} color="#366000" />,
+    title: 'Soil Analysis',
+    image: '/images/services/soil.jpg',
     description: 'Conducting soil tests, providing recommendations on soil health, and suggesting amendments.',
   },
   {
     title: 'Precision Agriculture',
-    icon: <BarChart size={40} color="#366000" />,
-    description: 'Implementing technologies like GPS, drones, and sensors to optimize crop yields and reduce waste.',
+    image: '/images/services/precision.jpg',
+    description: 'Using drones, GPS, and sensors to optimize yields and reduce waste.',
   },
   {
     title: 'Sustainability Consulting',
-    icon: <Globe size={40} color="#366000" />,
-    description: 'Guiding on sustainable practices, environmental assessments, and compliance with regulations.',
-  },
-  {
-    title: 'Farm Management',
-    icon: <Gear size={40} color="#366000" />,
-    description: 'Providing advice on farm operations, financial planning, and risk management.',
+    image: '/images/services/sustainability.jpg',
+    description: 'Sustainable practices, environmental assessments, and regulatory guidance.',
   },
   {
     title: 'Irrigation Management',
-    icon: <Droplet size={40} color="#366000" />,
-    description: 'Designing and optimizing irrigation systems to conserve water and improve crop yields.',
+    image: '/images/services/irrigation.jpg',
+    description: 'Designing efficient systems to conserve water and boost yield.',
   },
   {
-    title: 'Pest and Disease Management',
-    icon: <Shield size={40} color="#366000" />,
-    description: 'Identifying pests and diseases, recommending control measures, and implementing IPM strategies.',
+    title: 'Pest & Disease Management',
+    image: '/images/services/pests.jpg',
+    description: 'Identifying threats and implementing IPM strategies.',
   },
   {
-    title: 'Farm Mechanization',
-    icon: <Truck size={40} color="#366000" />,
-    description: 'Advising on farm equipment selection, maintenance, and optimization.',
-  },
-  {
-    title: 'Market Analysis and Access',
-    icon: <BarChart size={40} color="#366000" />,
-    description: 'Providing market research, analysis, and guidance on improving marketability.',
-  },
-  {
-    title: 'Capacity Building and Training',
-    icon: <People size={40} color="#366000" />,
-    description: 'Offering training and capacity-building programs for farmers and agricultural professionals.',
+    title: 'Capacity Building',
+    image: '/images/services/training.jpg',
+    description: 'Training programs for farmers and agribusiness professionals.',
   },
 ];
 
 const Services = () => {
   return (
-    <div className="container my-5">
-      <h2 className="text-center mb-4" style={{ color: '#366000' }}>Our Services</h2>
-      <Row>
+    <Container className="my-5">
+      <h2 className="text-center mb-5 fw-bold" style={{ color: '#366000' }}>Our Services</h2>
+      <Row className="g-4">
         {services.map((service, index) => (
-          <Col key={index} md={6} lg={4} className="mb-4">
-            <Card style={{ height: '100%', border: '1px solid #d0e2c5' }}>
-              <Card.Body className="d-flex flex-column justify-content-between">
-                <div>
-                  <div className="mb-3">{service.icon}</div>
-                  <Card.Title style={{ color: '#366000' }}>{service.title}</Card.Title>
-                  <Card.Text>{service.description}</Card.Text>
-                </div>
-                <div className="mt-3">
+          <Col key={index} md={6} lg={4}>
+            <Card className="service-card h-100 shadow-sm">
+              <Card.Img
+                variant="top"
+                src={service.image}
+                alt={service.title}
+                className="service-img"
+              />
+              <Card.Body className="d-flex flex-column">
+                <Card.Title style={{ color: '#366000' }}>{service.title}</Card.Title>
+                <Card.Text>{service.description}</Card.Text>
+                <div className="mt-auto">
                   <Link to="/booking">
-                    <Button variant="success" style={{ backgroundColor: '#366000', borderColor: '#366000' }}>
-                      Book Now
+                    <Button
+                       variant="outline-success"
+                      size="sm"
+                      style={{ Color: '#366000', borderColor: '#366000', fontWeight: '500',padding: '4px 12px' }}
+                      className="w-100"
+                    >
+                      Book now
                     </Button>
                   </Link>
                 </div>
@@ -178,8 +171,10 @@ const Services = () => {
           </Col>
         ))}
       </Row>
-    </div>
+    </Container>
   );
 };
 
 export default Services;
+
+

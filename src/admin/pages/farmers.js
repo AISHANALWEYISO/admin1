@@ -76,7 +76,7 @@ const Farmers = () => {
     } catch (error) {
       alert('Failed to delete: ' + error.response?.data?.error || error.message);
     }
-  };
+  };                               
 
   return (
     <div className="p-4">
@@ -85,14 +85,14 @@ const Farmers = () => {
         <FaPlus /> Add Farmer
       </Button>
 
-      <Table striped bordered hover>
+      <Table striped bordered hover>                                                                                      
         <thead>
           <tr>
-            <th>#</th>
+            <th>ID</th>                                                
             <th>Name</th>
             <th>Location</th>
-            <th>Crops Grown</th>
-            <th>Actions</th>
+            <th>Crops Grown</th>                                         
+            <th>Actions</th>                                                                                                                                         
           </tr>
         </thead>
         <tbody>
