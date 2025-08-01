@@ -66,6 +66,7 @@ const styles = {
     gap: '30px',
     margin: 0,
     padding: 0,
+    alignItems:'center'
   },
   link: {
     color: '#366000',

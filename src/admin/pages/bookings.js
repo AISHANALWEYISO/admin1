@@ -1,292 +1,172 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Table, Button, Modal, Form, Alert, Spinner } from 'react-bootstrap';
-import { FaEye, FaPlus, FaTrash } from 'react-icons/fa';
-import { getToken } from '../utils/auth';
+import { Table, Button, Modal, Form, Spinner, Alert } from 'react-bootstrap';
+import { FaCheck, FaTrash, FaEdit } from 'react-icons/fa';
+import { getToken } from '../utils/auth';  // Make sure this returns your JWT token as string
 
-const API_URL = 'http://127.0.0.1:5000/api/v1';
+const API_BASE_URL = 'http://127.0.0.1:5000';
 
 const AdminBookings = () => {
   const [bookings, setBookings] = useState([]);
-  const [services, setServices] = useState([]);
-  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
-
-  // Modal states
-  const [showViewModal, setShowViewModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
-  const [statusUpdate, setStatusUpdate] = useState('');
+  const [newStatus, setNewStatus] = useState('');
 
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [newBooking, setNewBooking] = useState({
-    user_id: '',
-    service_id: '',
-    status: 'pending',
-  });
-
-  // Fetch bookings + users + services
-  const fetchData = async () => {
+  // Fetch bookings from backend
+  const fetchBookings = async () => {
     setLoading(true);
+    setError(null);
     try {
-      const [bRes, sRes, uRes] = await Promise.all([
-        axios.get(`${API_URL}/bookings/`, {
-          headers: { Authorization: `Bearer ${getToken()}` },
-        }),
-        axios.get(`${API_URL}/services/`, {
-          headers: { Authorization: `Bearer ${getToken()}` },
-        }),
-        axios.get(`${API_URL}/users/`, {
-          headers: { Authorization: `Bearer ${getToken()}` },
-        }),
-      ]);
-      setBookings(bRes.data.bookings);
-      setServices(sRes.data.services);
-      setUsers(uRes.data.users);
-      setErrorMsg('');
+      const token = getToken();
+      if (!token) throw new Error('No auth token found');
+
+      const response = await axios.get(`${API_BASE_URL}/api/v1/bookings/`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (response.data.bookings) {
+        setBookings(response.data.bookings);
+      } else {
+        setBookings([]);
+      }
     } catch (err) {
-      console.error(err);
-      setErrorMsg('Failed to load data. Please try again later.');
+      console.error('Failed to fetch bookings:', err.response?.data || err.message);
+      setError('Failed to load bookings. Please try again later.');
+      setBookings([]);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   useEffect(() => {
-    fetchData();
+    fetchBookings();
   }, []);
 
-  // Open update status modal
-  const openViewModal = (booking) => {
+  // Open modal to update status
+  const handleStatusChange = (booking) => {
     setSelectedBooking(booking);
-    setStatusUpdate(booking.status);
-    setShowViewModal(true);
+    setNewStatus(booking.status || 'pending');
+    setShowModal(true);
   };
 
-  // Handle update status submit
-  const handleStatusUpdate = async () => {
-    if (!statusUpdate) {
-      alert('Please select a status.');
-      return;
-    }
+  // Update booking status API call
+  const handleUpdateStatus = async () => {
+    if (!selectedBooking) return;
     try {
+      
       await axios.put(
-        `${API_URL}/bookings/edit/${selectedBooking.id}`,
-        { status: statusUpdate },
-        { headers: { Authorization: `Bearer ${getToken()}` } }
+        `${API_BASE_URL}/api/v1/bookings/edit/${selectedBooking.id}`,
+        { status: newStatus },
+        { headers: {   Authorization: `Bearer ${getToken()}` } }
       );
-      alert('Booking status updated successfully');
-      setShowViewModal(false);
-      fetchData();
+      setShowModal(false);
+      fetchBookings();
     } catch (err) {
-      console.error(err);
-      alert('Failed to update booking status');
+      console.error('Failed to update booking status:', err.response?.data || err.message);
+      alert('Failed to update booking status. Please try again.');
     }
   };
 
-  // Handle delete booking
-  const handleDelete = async (bookingId) => {
+  // Delete booking API call
+  const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this booking?')) return;
-
     try {
-      await axios.delete(`${API_URL}/bookings/delete/${bookingId}`, {
-        headers: { Authorization: `Bearer ${getToken()}` },
+      const token = getToken();
+      await axios.delete(`${API_BASE_URL}/api/v1/bookings/delete/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
       });
-      alert('Booking deleted successfully');
-      setBookings((prev) => prev.filter((b) => b.id !== bookingId));
+      fetchBookings();
     } catch (err) {
-      console.error(err);
-      alert('Failed to delete booking');
-    }
-  };
-
-  // Handle add new booking
-  const handleAddBooking = async () => {
-    if (!newBooking.user_id || !newBooking.service_id) {
-      alert('Please select both User and Service');
-      return;
-    }
-
-    try {
-      // Sending user_id explicitly, assuming your backend supports this for admin-created bookings
-      await axios.post(
-        `${API_URL}/bookings/create`,
-        {
-          user_id: newBooking.user_id,
-          service_id: newBooking.service_id,
-          status: newBooking.status,
-        },
-        {
-          headers: { Authorization: `Bearer ${getToken()}` },
-        }
-      );
-      alert('Booking created successfully');
-      setShowAddModal(false);
-      setNewBooking({ user_id: '', service_id: '', status: 'pending' });
-      fetchData();
-    } catch (err) {
-      console.error(err);
-      alert('Failed to create booking');
+      console.error('Failed to delete booking:', err.response?.data || err.message);
+      alert('Failed to delete booking. Please try again.');
     }
   };
 
   return (
-    <div className="container mt-5">
-      <h3>Manage Bookings</h3>
+    <div className="container mt-4">
+      <h2 className="mb-4">All Bookings</h2>
 
-      {errorMsg && <Alert variant="danger">{errorMsg}</Alert>}
-
-      <div className="mb-3">
-        <Button variant="primary" onClick={() => setShowAddModal(true)}>
-          <FaPlus className="me-2" />
-          Add Booking
-        </Button>
-      </div>
+      {error && <Alert variant="danger">{error}</Alert>}
 
       {loading ? (
-        <div className="text-center my-5">
-          <Spinner animation="border" />
-        </div>
+        <Spinner animation="border" />
+      ) : bookings.length === 0 ? (
+        <p>No bookings found.</p>
       ) : (
         <Table striped bordered hover responsive>
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Status</th>
-              <th>Service</th>
-              <th>Price</th>
+              <th>#</th>
               <th>User</th>
+              <th>Service</th>
+              <th>Status</th>
+              <th>Verified</th>
+              <th>Date</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {bookings.length === 0 ? (
-              <tr>
-                <td colSpan="6" className="text-center">
-                  No bookings found.
+            {bookings.map((booking, index) => (
+              <tr key={booking.id}>
+                <td>{index + 1}</td>
+                <td>
+                  {booking.user?.name || 'N/A'} <br />
+                  <small>({booking.user?.email || 'N/A'})</small>
+                </td>
+                <td>{booking.service?.name || 'N/A'}</td>
+                <td>{booking.status || 'pending'}</td>
+                <td>{booking.is_verified ? 'Yes' : 'No'}</td>
+                <td>{booking.booking_date || 'N/A'}</td>
+                <td>
+                  <Button
+                    variant="info"
+                    size="sm"
+                    onClick={() => handleStatusChange(booking)}
+                    className="me-2"
+                  >
+                    <FaEdit /> Update
+                  </Button>
+                  <Button
+                    variant="danger"
+                    size="sm"
+                    onClick={() => handleDelete(booking.id)}
+                  >
+                    <FaTrash /> Delete
+                  </Button>
                 </td>
               </tr>
-            ) : (
-              bookings.map((booking) => (
-                <tr key={booking.id}>
-                  <td>{booking.id}</td>
-                  <td>{booking.status}</td>
-                  <td>{booking.service?.name || 'N/A'}</td>
-                  <td>{booking.service?.price || 'N/A'}</td>
-                  <td>{booking.user?.name || booking.user?.email || 'N/A'}</td>
-                  <td>
-                    <Button
-                      variant="info"
-                      size="sm"
-                      className="me-2"
-                      onClick={() => openViewModal(booking)}
-                    >
-                      <FaEye />
-                    </Button>
-                    <Button
-                      variant="danger"
-                      size="sm"
-                      onClick={() => handleDelete(booking.id)}
-                    >
-                      <FaTrash />
-                    </Button>
-                  </td>
-                </tr>
-              ))
-            )}
+            ))}
           </tbody>
         </Table>
       )}
 
       {/* Update Status Modal */}
-      <Modal show={showViewModal} onHide={() => setShowViewModal(false)} centered>
+      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Update Booking Status</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {selectedBooking && (
-            <>
-              <p>
-                <strong>Service:</strong> {selectedBooking.service?.name || 'N/A'}
-              </p>
-              <p>
-                <strong>Current Status:</strong> {selectedBooking.status}
-              </p>
-              <Form.Select
-                value={statusUpdate}
-                onChange={(e) => setStatusUpdate(e.target.value)}
-              >
-                <option value="pending">Pending</option>
-                <option value="confirmed">Confirmed</option>
-                <option value="delivered">Delivered</option>
-              </Form.Select>
-            </>
-          )}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowViewModal(false)}>
-            Close
-          </Button>
-          <Button variant="success" onClick={handleStatusUpdate}>
-            Update
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-      {/* Add Booking Modal */}
-      <Modal show={showAddModal} onHide={() => setShowAddModal(false)} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Add New Booking</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form.Group className="mb-3">
-            <Form.Label>User</Form.Label>
-            <Form.Select
-              value={newBooking.user_id}
-              onChange={(e) => setNewBooking({ ...newBooking, user_id: e.target.value })}
-            >
-              <option value="">Select User</option>
-              {users.map((user) => (
-                <option key={user.id} value={user.id}>
-                  {user.username || user.email}
-                </option>
-              ))}
-            </Form.Select>
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>Service</Form.Label>
-            <Form.Select
-              value={newBooking.service_id}
-              onChange={(e) => setNewBooking({ ...newBooking, service_id: e.target.value })}
-            >
-              <option value="">Select Service</option>
-              {services.map((service) => (
-                <option key={service.id} value={service.id}>
-                  {service.name}
-                </option>
-              ))}
-            </Form.Select>
-          </Form.Group>
-
-          <Form.Group className="mb-3">
+          <Form.Group controlId="formStatus">
             <Form.Label>Status</Form.Label>
             <Form.Select
-              value={newBooking.status}
-              onChange={(e) => setNewBooking({ ...newBooking, status: e.target.value })}
+              value={newStatus}
+              onChange={(e) => setNewStatus(e.target.value)}
             >
               <option value="pending">Pending</option>
               <option value="confirmed">Confirmed</option>
-              <option value="delivered">Delivered</option>
+              <option value="completed">Completed</option>
             </Form.Select>
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowAddModal(false)}>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
             Cancel
           </Button>
-          <Button variant="primary" onClick={handleAddBooking}>
-            Submit
+          <Button variant="success" onClick={handleUpdateStatus}>
+            <FaCheck /> Update
           </Button>
         </Modal.Footer>
       </Modal>

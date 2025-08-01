@@ -1,78 +1,55 @@
 import React from 'react';
-import { Container, Row, Col, Card, Carousel } from 'react-bootstrap';
-import image2 from '../images/tree.jpeg';
+import { Container, Row, Col, Card } from 'react-bootstrap';
 import ser from '../images/ser.jpg';
 import goats from '../images/goats.jpg';
 import postharvest from '../images/posthavest.jpg';
-import man from '../images/man.jpg';
+import comidity from '../images/commodity.jpeg';
 import food from '../images/food.jpg';
 import irrigation from '../images/irrigation.jpg';
 import logot from '../images/LOGOT.png';
-import red from '../images/maise2.jpeg'
+import bean from '../images/beans.jpg';
+import rice from '../images/rice.jpeg'
+import soya from '../images/soya.jpeg'
+import trct from '../images/tractor.jpg'
+import nest from '../images/nest.png'
+
 
 const Home = () => {
-  const slideTexts = [
-    {
-      image: image2,
-      heading: 'Yucca Consulting Limited',
-      subtext: 'Cultivating a sustainable world',
-    },
-    {
-      image: man,
-      heading: 'Monitoring and evaluation of small-scale farming practices',
-      subtext: 'Field-tested, community-driven insights.',
-    },
-    {
-      image: red,
-      heading: 'Crop management and food resilience',
-      subtext: 'Securing tomorrow’s harvest today.',
-    },
-  ];
-
   const products = [
-    { name: 'Organic Fertilizer', image: ser },
-    { name: 'Hybrid Seeds', image: goats },
-    { name: 'Drip Irrigation Kit', image: irrigation },
+    { name: 'beens', image: bean },
+    { name: 'soya', image: soya },
+    { name: 'rice', image: rice },
   ];
 
   return (
     <div style={{ margin: 0, padding: 0 }}>
-      {/* Carousel - Full Width & Text on Left */}
-      <Carousel fade controls={false} indicators interval={3000}>
-        {slideTexts.map((slide, index) => (
-          <Carousel.Item key={index}>
-            <div
-              style={{
-                backgroundImage: `url(${slide.image})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                height: '100vh',
-                width: '100vw',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'flex-start',
-                paddingLeft: '5%',
-                margin:'0'
-              }}
-            >
-              <div
-                className="p-4"
-                style={{
-                  backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                  borderRadius: '10px',
-                  color: 'white',
-                  maxWidth: '600px',
-                }}
-              >
-                <h1 className="fw-bold mb-3" style={{ fontSize: '2.8rem' }}>
-                  {slide.heading}
-                </h1>
-                <p className="fs-4 fst-italic">{slide.subtext}</p>
-              </div>
-            </div>
-          </Carousel.Item>
-        ))}
-      </Carousel>
+      {/* Hero Section - Static Full Image */}
+      <div
+        style={{
+          backgroundImage: `url(${trct})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center center',
+          height: '90vh',
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'flex-start',
+          paddingLeft: '5%',
+        }}
+      >
+        <h1
+          style={{
+            color: 'white',
+            fontSize: '3rem',
+            fontWeight: 'small',
+            textShadow: '1px 1px 4px rgba(0,0,0,0.5)',
+            textAlign:'center',
+            marginTop:'1rem'
+          }}
+        >
+          Cultivating a sustainable world
+        </h1>
+      </div>
 
       {/* Intro Section */}
       <Container fluid className="my-5">
@@ -113,7 +90,7 @@ const Home = () => {
         </Row>
       </Container>
 
-      {/* Dealers In */}
+      {/* DEALERS IN Section */}
       <Container className="my-5 text-center">
         <h4 className="fw-bold" style={{ borderBottom: '3px solid #366000', display: 'inline-block', paddingBottom: '5px' }}>
           DEALERS IN
@@ -156,14 +133,14 @@ const Home = () => {
         </Row>
       </Container>
 
-      {/* Our Interventions */}
+      {/* OUR INTERVENTIONS */}
       <Container className="my-5 text-center">
         <h4 className="fw-bold" style={{ borderBottom: '3px solid #366000', display: 'inline-block', paddingBottom: '5px' }}>
           OUR INTERVENTIONS
         </h4>
         <Row className="mt-4 g-4 justify-content-center">
           {[{
-            img: man,
+            img: comidity,
             title: 'Strategic commodities',
             text: 'Provision of planting materials to boost productivity.',
           },
@@ -240,7 +217,7 @@ const Home = () => {
           OUR PARTNERS
         </h4>
         <Row className="mt-4 justify-content-center align-items-center g-4">
-          {[logot].map((logo, index) => (
+          {[logot,nest].map((logo,index) => (
             <Col key={index} md={3} sm={6} xs={6}>
               <img
                 src={logo}

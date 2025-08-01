@@ -97,42 +97,61 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, Button, Row, Col, Container } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../styles/services.css'; // Add custom animations here
+import '../styles/services.css';
 
+// Import images
+import cropImg from '../images/kkk.jpeg';
+import precisionImg from '../images/farm managent.jpeg';
+import sustainabilityImg from '../images/food security.jpeg';
+import irrigationImg from '../images/irrigation.jpg';
+import pestsImg from '../images/cows1.jpeg';
+import capacityImg from '../images/tree.jpeg';
+import ser from '../images/ser.jpg'
+// Create a services array with proper image references
 const services = [
   {
     title: 'Crop Management',
-    image: '/images/services/crop.jpg',
+    image: cropImg,
     description: 'Advising on crop selection, planting, irrigation, fertilization, and pest management.',
   },
   {
     title: 'Soil Analysis',
-    image: '/images/services/soil.jpg',
+    image: ser, // using same image as cropImg; adjust if needed
     description: 'Conducting soil tests, providing recommendations on soil health, and suggesting amendments.',
   },
   {
     title: 'Precision Agriculture',
-    image: '/images/services/precision.jpg',
+    image: precisionImg,
     description: 'Using drones, GPS, and sensors to optimize yields and reduce waste.',
   },
   {
     title: 'Sustainability Consulting',
-    image: '/images/services/sustainability.jpg',
+    image: sustainabilityImg,
     description: 'Sustainable practices, environmental assessments, and regulatory guidance.',
   },
   {
     title: 'Irrigation Management',
-    image: '/images/services/irrigation.jpg',
+    image: irrigationImg,
     description: 'Designing efficient systems to conserve water and boost yield.',
   },
   {
     title: 'Pest & Disease Management',
-    image: '/images/services/pests.jpg',
+    image: pestsImg,
     description: 'Identifying threats and implementing IPM strategies.',
   },
   {
     title: 'Capacity Building',
-    image: '/images/services/training.jpg',
+    image: capacityImg,
+    description: 'Training programs for farmers and agribusiness professionals.',
+  },
+   {
+    title: 'Capacity Building',
+    image: capacityImg,
+    description: 'Training programs for farmers and agribusiness professionals.',
+  },
+   {
+    title: 'Capacity Building',
+    image: capacityImg,
     description: 'Training programs for farmers and agribusiness professionals.',
   },
 ];
@@ -140,7 +159,9 @@ const services = [
 const Services = () => {
   return (
     <Container className="my-5">
-      <h2 className="text-center mb-5 fw-bold" style={{ color: '#366000' }}>Our Services</h2>
+      <h2 className="text-center mb-5 fw-bold" style={{ color: '#366000' }}>
+        Our Services
+      </h2>
       <Row className="g-4">
         {services.map((service, index) => (
           <Col key={index} md={6} lg={4}>
@@ -157,9 +178,14 @@ const Services = () => {
                 <div className="mt-auto">
                   <Link to="/booking">
                     <Button
-                       variant="outline-success"
+                      variant="outline-success"
                       size="sm"
-                      style={{ Color: '#366000', borderColor: '#366000', fontWeight: '500',padding: '4px 12px' }}
+                      style={{
+                        color: '#80a35dff', // Changed from "Color" to "color"
+                        borderColor: '#366000',
+                        fontWeight: '500',
+                        padding: '4px 12px'
+                      }}
                       className="w-100"
                     >
                       Book now
@@ -176,5 +202,6 @@ const Services = () => {
 };
 
 export default Services;
+
 
 

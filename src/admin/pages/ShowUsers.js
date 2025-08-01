@@ -199,3 +199,70 @@ const ShowUsers = () => {
 };
 
 export default ShowUsers;
+
+// import React, { useEffect, useState } from 'react';
+// import axios from 'axios';
+// import { Table, Spinner, Alert } from 'react-bootstrap';
+// import { getToken } from '../utils/auth';
+
+// const ShowUsers = () => {
+//   const [users, setUsers] = useState([]);
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState('');
+
+//   useEffect(() => {
+//     const fetchUsers = async () => {
+//       try {
+//         const res = await axios.get('http://localhost:5000/api/v1/users/', {
+//           headers: {
+//             Authorization: `Bearer ${getToken()}`
+//           }
+//         });
+//         setUsers(res.data.users);
+//         setLoading(false);
+//       } catch (err) {
+//         setError(err.response?.data?.error || 'Failed to fetch users');
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchUsers();
+//   }, []);
+
+//   return (
+//     <div className="container mt-4">
+//       <h3>All Users</h3>
+//       {loading && <Spinner animation="border" />}
+//       {error && <Alert variant="danger">{error}</Alert>}
+//       {!loading && users.length === 0 && <p>No users found.</p>}
+//       {!loading && users.length > 0 && (
+//         <Table striped bordered hover responsive>
+//           <thead>
+//             <tr>
+//               <th>#</th>
+//               <th>Full Name</th>
+//               <th>Email</th>
+//               <th>Contact</th>
+//               <th>User Type</th>
+//               <th>Created At</th>
+//             </tr>
+//           </thead>
+//           <tbody>
+//             {users.map((user, index) => (
+//               <tr key={user.id}>
+//                 <td>{index + 1}</td>
+//                 <td>{user.first_name} {user.last_name}</td>
+//                 <td>{user.email}</td>
+//                 <td>{user.contact}</td>
+//                 <td>{user.type}</td>
+//                 <td>{new Date(user.created_at).toLocaleString()}</td>
+//               </tr>
+//             ))}
+//           </tbody>
+//         </Table>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default ShowUsers;

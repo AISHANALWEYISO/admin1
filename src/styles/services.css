@@ -25,3 +25,23 @@
 .icon-container:hover {
   transform: scale(1.2);
 }
+
+.service-card {
+  height: 100%; /* ensure card fills column height */
+  display: flex;
+  flex-direction: column;
+}
+
+.service-img {
+  height: 180px;         /* fixed height */
+  object-fit: cover;     /* cover crops image, maintaining aspect ratio */
+  width: 100%;           /* full width */
+  border-top-left-radius: 0.25rem; /* keep rounded corners */
+  border-top-right-radius: 0.25rem;
+}
+
+.card-body {
+  flex: 1 1 auto;        /* allow body to fill remaining card height */
+  display: flex;
+  flex-direction: column;
+}

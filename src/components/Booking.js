@@ -1,220 +1,484 @@
-// import React, { useState } from 'react';
-// import 'bootstrap/dist/css/bootstrap.min.css';
-// import DatePicker from 'react-datepicker';
-// import 'react-datepicker/dist/react-datepicker.css';
-// import axios from 'axios';
+// import React, { useState, useEffect } from "react";
+// import axios from "axios";
 
-// const Booking = () => {
-//   const [startDate, setStartDate] = useState(null);
-//   const [startTime, setStartTime] = useState('');
-//   const [name, setName] = useState('');
-//   const [availability, setAvailability] = useState(null);
-//   const [submittedData, setSubmittedData] = useState(null);
-//   const [isEditing, setIsEditing] = useState(false);
+// const backendBaseURL = "http://127.0.0.1:5000"; // Your Flask backend URL
 
-//   const handleCheckAvailability = async () => {
-//     if (!startDate) {
-//       alert("Please select a date first.");
+// const servicesList = [
+//   "Crop Management",
+//   "Soil Analysis and Management",
+//   "Precision Agriculture",
+//   "Sustainability Consulting",
+//   "Farm Management",
+//   "Irrigation Management",
+//   "Pest and Disease Management",
+//   "Farmer training workshop",
+//   "Market Analysis and Access",
+//   "Capacity Building and Training"
+// ];
+
+// const BookingForm = () => {
+//   const [form, setForm] = useState({
+//     name: "",
+//     contact: "",
+//     service: "",
+//     date: ""
+//   });
+//   const [showCodeInput, setShowCodeInput] = useState(false);
+//   const [verificationCode, setVerificationCode] = useState(["", "", "", "", "", ""]);
+//   const [bookingId, setBookingId] = useState(null);
+//   const [success, setSuccess] = useState("");
+//   const [error, setError] = useState("");
+//   const [countdown, setCountdown] = useState(60);
+//   const [codeSentTo,  ] = useState("");
+
+//   useEffect(() => {
+//     if (showCodeInput && countdown > 0) {
+//       const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+//       return () => clearTimeout(timer);
+//     }
+//   }, [showCodeInput, countdown]);
+
+//   const handleInputChange = (e) => {
+//     setForm({ ...form, [e.target.name]: e.target.value });
+//   };
+
+//   const handleCodeChange = (index, value) => {
+//     if (value.length > 1) return;
+//     const newCode = [...verificationCode];
+//     newCode[index] = value;
+//     setVerificationCode(newCode);
+
+//     if (value && index < 5) {
+//       const nextInput = document.getElementById(`code-${index + 1}`);
+//       if (nextInput) nextInput.focus();
+//     }
+//   };
+
+//  const handleBookNow = async () => {
+//   setError("");
+//   setSuccess("");
+//   if (!form.service || !form.date) {
+//     setError("Please select a service and date.");
+//     return;
+//   }
+
+// //   try {
+// //     const token = localStorage.getItem("token");
+// //     const res = await axios.post(
+// //       `${backendBaseURL}/api/v1/bookings/create`,
+// //       {
+// //         service_name: form.service,
+// //         booking_date: form.date,
+// //       },
+// //       {
+// //         headers: {
+// //           Authorization: `Bearer ${token}`,
+// //           "Content-Type": "application/json",
+// //         },
+// //       }
+// //     );
+
+// //     setSuccess("Booking created successfully!");
+// //     setForm({ name: "", contact: "", service: "", date: "" }); // reset form
+// //   } catch (err) {
+// //     setError(err?.response?.data?.error || "Booking failed.");
+// //   }
+// // };
+
+//     try {
+//       const token = localStorage.getItem("token");
+
+//       await axios.post(
+//         `${backendBaseURL}/api/v1/bookings/create`,
+//         {
+//           service_name: form.service,
+//           booking_date: form.date,
+//         },
+//         {
+//           headers: {
+//             Authorization: `Bearer ${token}`,
+//             "Content-Type": "application/json",
+//           },
+//         }
+//       );
+
+//       setSuccess("Booking created successfully!");
+//       setForm({ name: "", contact: "", service: "", date: "" }); // Reset form
+//     } catch (err) {
+//       setError(err?.response?.data?.error || "Booking failed.");
+//     }
+
+
+
+//   const handleConfirmBooking = async () => {
+//     setError("");
+//     setSuccess("");
+//     const code = verificationCode.join("");
+//     if (code.length < 6) {
+//       setError("Please enter the 6-digit verification code.");
 //       return;
 //     }
 
 //     try {
-//       const response = await axios.post('/api/check-availability', {
-//         date: startDate.toISOString().split('T')[0],
-//       });
-//       setAvailability(response.data.available);
-//     } catch (err) {
-//       console.error(err);
-//       alert("Could not check availability.");
+//       const token = localStorage.getItem("token");
+//       if (!token) {
+//         setError("You must be logged in to verify booking.");
+//         return;
+//       }
+
+//       const res = await axios.post(
+//         `${backendBaseURL}/api/v1/bookings/verify/${bookingId}`,
+//         { verification_code: code },
+//         {
+//           headers: {
+//             Authorization: `Bearer ${token}`,
+//             "Content-Type": "application/json"
+//           }
+//         }
+//       );
+
+//       if (res.data.message === "Booking verified successfully") {
+//         setSuccess("✅ Booking confirmed successfully!");
+//         setShowCodeInput(false);
+//         setVerificationCode(["", "", "", "", "", ""]);
+//         setBookingId(null);
+//         setForm({ name: "", contact: "", service: "", date: "" });
+//       }
+//     } catch (error) {
+//       setError(error?.response?.data?.error || "❌ Failed to confirm booking.");
 //     }
 //   };
 
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     if (startDate && name && startTime) {
-//       const bookingData = {
-//         name,
-//         date: startDate.toISOString().split('T')[0],
-//         time: startTime,
-//       };
-
-//       try {
-//         if (isEditing) {
-//           await axios.put('/api/bookings/update', bookingData); // Update booking
-//           alert("Booking updated successfully and user notified.");
-//         } else {
-//           await axios.post('/api/bookings', bookingData); // New booking
-//           alert("Booking confirmed and email sent to business owner.");
-//         }
-
-//         setSubmittedData({
-//           ...bookingData,
-//           readableDate: startDate.toLocaleDateString(),
-//           month: startDate.toLocaleString('default', { month: 'long' }),
-//           year: startDate.getFullYear(),
-//         });
-
-//         setIsEditing(false);
-//       } catch (error) {
-//         console.error(error);
-//         alert("Error submitting booking.");
-//       }
-//     }
+//   const handleResend = () => {
+//     setCountdown(60);
+//     handleBookNow();
 //   };
 
 //   return (
-//     <div className="container mt-5">
-//       <div className="card shadow">
-//         <div className="card-header bg-primary text-white">
-//           <h2 className="mb-0">{isEditing ? 'Update Booking' : 'Booking Details'}</h2>
-//         </div>
-//         <div className="card-body">
-//           <form onSubmit={handleSubmit}>
-//             <div className="mb-3">
-//               <label className="form-label">Select Date</label>
-//               <DatePicker
-//                 selected={startDate}
-//                 onChange={(date) => {
-//                   setStartDate(date);
-//                   setAvailability(null);
-//                 }}
-//                 minDate={new Date()}
-//                 className="form-control"
-//                 placeholderText="Click to show calendar"
-//                 dateFormat="MMMM d, yyyy"
-//                 isClearable
-//               />
-//             </div>
+//     <div style={{ maxWidth: 500, margin: "auto", padding: 20, background: "#E7F0D6", borderRadius: 8 }}>
+//       <h2 style={{ color: "#366000", textAlign: "center" }}>Book a Service</h2>
 
-//             <div className="mb-3">
-//               <button type="button" className="btn btn-outline-success" onClick={handleCheckAvailability}>
-//                 Check Availability
-//               </button>
-//               {availability !== null && (
-//                 <div className="mt-2">
-//                   {availability ? (
-//                     <span className="text-success">Available</span>
-//                   ) : (
-//                     <span className="text-danger">Not Available</span>
-//                   )}
-//                 </div>
-//               )}
-//             </div>
+//       {success && <div style={{ color: "green", marginBottom: 16, textAlign: "center" }}>{success}</div>}
+//       {error && <div style={{ color: "red", marginBottom: 16, textAlign: "center" }}>{error}</div>}
 
-//             <div className="mb-3">
-//               <label className="form-label">Start Time</label>
+//       {!showCodeInput ? (
+//         <>
+//           <label style={{ color: "#366000" }}>Full Name</label>
+//           <input
+//             type="text"
+//             name="name"
+//             value={form.name}
+//             onChange={handleInputChange}
+//             placeholder="Enter your full name"
+//             style={{ width: "100%", padding: 8, marginBottom: 12 }}
+//           />
+//           <label style={{ color: "#366000" }}>Email or Phone</label>
+//           <input
+//             type="text"
+//             name="contact"
+//             value={form.contact}
+//             onChange={handleInputChange}
+//             placeholder="Enter your email or phone"
+//             style={{ width: "100%", padding: 8, marginBottom: 12 }}
+//           />
+//           <label style={{ color: "#366000" }}>Select Service</label>
+//           <select
+//             name="service"
+//             value={form.service}
+//             onChange={handleInputChange}
+//             style={{ width: "100%", padding: 8, marginBottom: 12 }}
+//           >
+//             <option value="">-- Choose a service --</option>
+//             {servicesList.map((service, i) => (
+//               <option key={i} value={service}>
+//                 {service}
+//               </option>
+//             ))}
+//           </select>
+//           <label style={{ color: "#366000" }}>Preferred Date</label>
+//           <input
+//             type="date"
+//             name="date"
+//             value={form.date}
+//             onChange={handleInputChange}
+//             style={{ width: "100%", padding: 8, marginBottom: 16 }}
+//           />
+//           <button
+//             onClick={handleBookNow}
+//             style={{ width: "100%", padding: 12, backgroundColor: "#366000", color: "white", border: "none", borderRadius: 6 }}
+//           >
+//             Book Now
+//           </button>
+//         </>
+//       ) : (
+//         <div style={{ textAlign: "center", backgroundColor: "#f9fff0", padding: 20, borderRadius: 8 }}>
+//           <h3 style={{ color: "#366000" }}>Enter Verification Code</h3>
+//           <div style={{ display: "flex", justifyContent: "center", gap: 8, marginBottom: 12 }}>
+//             {verificationCode.map((digit, i) => (
 //               <input
-//                 type="time"
-//                 className="form-control"
-//                 value={startTime}
-//                 onChange={(e) => setStartTime(e.target.value)}
-//                 required
-//               />
-//             </div>
-
-//             <div className="mb-4">
-//               <label className="form-label">Full Name</label>
-//               <input
+//                 key={i}
+//                 id={`code-${i}`}
 //                 type="text"
-//                 className="form-control"
-//                 value={name}
-//                 onChange={(e) => setName(e.target.value)}
-//                 placeholder="Enter your name"
-//                 required
+//                 maxLength={1}
+//                 value={digit}
+//                 onChange={(e) => handleCodeChange(i, e.target.value)}
+//                 style={{ width: 40, height: 40, fontSize: 24, textAlign: "center", borderRadius: 6, border: "1px solid #366000" }}
 //               />
-//             </div>
-
-//             <button
-//               type="submit"
-//               className="btn btn-primary w-100"
-//               disabled={!startDate || !name || !startTime}
-//             >
-//               {isEditing ? 'Update Booking' : 'Confirm Booking'}
-//             </button>
-//           </form>
-
-//           {submittedData && (
-//             <div className="mt-4 p-3 bg-light rounded">
-//               <h4>Booking {isEditing ? 'Updated' : 'Confirmed'}!</h4>
-//               <p><strong>Name:</strong> {submittedData.name}</p>
-//               <p><strong>Date:</strong> {submittedData.readableDate}</p>
-//               <p><strong>Month:</strong> {submittedData.month}</p>
-//               <p><strong>Year:</strong> {submittedData.year}</p>
-//               <p><strong>Time:</strong> {submittedData.time}</p>
-
+//             ))}
+//           </div>
+//           <p style={{ color: "#366000", marginBottom: 12 }}>
+//             Code sent via <strong>{codeSentTo}</strong>.{" "}
+//             {countdown > 0 ? (
+//               <>Expires in {countdown} seconds</>
+//             ) : (
 //               <button
-//                 className="btn btn-warning mt-2"
-//                 onClick={() => {
-//                   setIsEditing(true);
-//                   setName(submittedData.name);
-//                   setStartDate(new Date(submittedData.date));
-//                   setStartTime(submittedData.time);
-//                 }}
+//                 onClick={handleResend}
+//                 style={{ background: "none", border: "none", color: "#366000", cursor: "pointer", textDecoration: "underline" }}
 //               >
-//                 Edit Booking
+//                 Resend Code
 //               </button>
-//             </div>
-//           )}
+//             )}
+//           </p>
+//           <button
+//             onClick={handleConfirmBooking}
+//             style={{ width: "100%", padding: 12, backgroundColor: "#274800", color: "white", border: "none", borderRadius: 6 }}
+//           >
+//             Confirm Booking
+//           </button>
 //         </div>
-//       </div>
+//       )}
 //     </div>
 //   );
 // };
 
-// export default Booking;
-import React from 'react';
-import { Container, Form, Button } from 'react-bootstrap';
+// export default BookingForm;
 
-const Booking = () => {
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+
+const backendBaseURL = "http://127.0.0.1:5000"; // Your Flask backend URL
+
+const servicesList = [
+  "Crop Management",
+  "Soil Analysis and Management",
+  "Precision Agriculture",
+  "Sustainability Consulting",
+  "Farm Management",
+  "Irrigation Management",
+  "Pest and Disease Management",
+  "Farmer training workshop",
+  "Market Analysis and Access",
+  "Capacity Building and Training"
+];
+
+const BookingForm = () => {
+  const [form, setForm] = useState({
+    name: "",
+    contact: "",
+    service: "",
+    date: ""
+  });
+  const [showCodeInput, setShowCodeInput] = useState(false);
+  const [verificationCode, setVerificationCode] = useState(["", "", "", "", "", ""]);
+  const [bookingId, setBookingId] = useState(null);
+  const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
+  const [countdown, setCountdown] = useState(60);
+
+  useEffect(() => {
+    if (showCodeInput && countdown > 0) {
+      const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [showCodeInput, countdown]);
+
+  const handleInputChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleCodeChange = (index, value) => {
+    if (value.length > 1) return;
+    const newCode = [...verificationCode];
+    newCode[index] = value;
+    setVerificationCode(newCode);
+
+    if (value && index < 5) {
+      const nextInput = document.getElementById(`code-${index + 1}`);
+      if (nextInput) nextInput.focus();
+    }
+  };
+
+  const handleBookNow = async () => {
+  setError("");
+  setSuccess("");
+
+  if (!form.service || !form.date || !form.name || !form.contact) {
+    setError("Please fill in all fields.");
+    return;
+  }
+
+  try {
+    const token = localStorage.getItem("token");
+
+    await axios.post(
+      `${backendBaseURL}/api/v1/bookings/create`,
+      {
+        name: form.name,
+        contact: form.contact,
+        service_name: form.service,
+        booking_date: form.date,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    setSuccess("Booking created successfully!");
+    setForm({ name: "", contact: "", service: "", date: "" }); // Reset form
+  } catch (err) {
+    setError(err?.response?.data?.error || "Booking failed.");
+  }
+};
+
+
+  const handleConfirmBooking = async () => {
+    setError("");
+    setSuccess("");
+
+    const code = verificationCode.join("");
+    if (code.length < 6) {
+      setError("Please enter the 6-digit verification code.");
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await axios.post(
+        `${backendBaseURL}/api/v1/bookings/verify/${bookingId}`,
+        { verification_code: code },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+          }
+        }
+      );
+
+      if (response.data.message === "Booking verified successfully") {
+        setSuccess("✅ Booking confirmed successfully!");
+        setShowCodeInput(false);
+        setVerificationCode(["", "", "", "", "", ""]);
+        setBookingId(null);
+        setForm({ name: "", contact: "", service: "", date: "" });
+      }
+    } catch (error) {
+      setError(error?.response?.data?.error || "❌ Failed to confirm booking.");
+    }
+  };
+
+  const handleResend = () => {
+    setCountdown(60);
+    handleBookNow();
+  };
+
   return (
-    <Container className="my-5">
-      <h2 className="mb-4 text-center" style={{ color: '#366000' }}>Book a Service</h2>
-      <Form style={{ maxWidth: '600px', margin: '0 auto' }}>
-        <Form.Group className="mb-3" controlId="fullName">
-          <Form.Label>Full Name</Form.Label>
-          <Form.Control type="text" placeholder="Enter your full name" required />
-        </Form.Group>
+    <div style={{ maxWidth: 500, margin: "auto", padding: 20, background: "#E7F0D6", borderRadius: 8 }}>
+      <h2 style={{ color: "#366000", textAlign: "center" }}>Book a Service</h2>
 
-        <Form.Group className="mb-3" controlId="email">
-          <Form.Label>Email Address</Form.Label>
-          <Form.Control type="email" placeholder="Enter your email" required />
-        </Form.Group>
+      {success && <div style={{ color: "green", marginBottom: 16, textAlign: "center" }}>{success}</div>}
+      {error && <div style={{ color: "red", marginBottom: 16, textAlign: "center" }}>{error}</div>}
 
-        <Form.Group className="mb-3" controlId="service">
-          <Form.Label>Select Service</Form.Label>
-          <Form.Select required>
-            <option value="">-- Choose a service --</option>
-            <option value="Crop Management">Crop Management</option>
-            <option value="Soil Analysis and Management">Soil Analysis and Management</option>
-            <option value="Precision Agriculture">Precision Agriculture</option>
-            <option value="Sustainability Consulting">Sustainability Consulting</option>
-            <option value="Farm Management">Farm Management</option>
-            <option value="Irrigation Management">Irrigation Management</option>
-            <option value="Pest and Disease Management">Pest and Disease Management</option>
-            <option value="Farm Mechanization">Farm Mechanization</option>
-            <option value="Market Analysis and Access">Market Analysis and Access</option>
-            <option value="Capacity Building and Training">Capacity Building and Training</option>
-          </Form.Select>
-        </Form.Group>
-
-        <Form.Group className="mb-3" controlId="date">
-          <Form.Label>Preferred Date</Form.Label>
-          <Form.Control type="date" required />
-        </Form.Group>
-
-        <div className="text-center">
-          <Button
-            type="submit"
-            variant="success"
-            style={{ backgroundColor: '#366000', borderColor: '#366000' }}
+      {!showCodeInput ? (
+        <>
+          <label style={{ color: "#366000" }}>Full Name</label>
+          <input
+            type="text"
+            name="name"
+            value={form.name}
+            onChange={handleInputChange}
+            placeholder="Enter your full name"
+            style={{ width: "100%", padding: 8, marginBottom: 12 }}
+          />
+          <label style={{ color: "#366000" }}>Email or Phone</label>
+          <input
+            type="text"
+            name="contact"
+            value={form.contact}
+            onChange={handleInputChange}
+            placeholder="Enter your email or phone"
+            style={{ width: "100%", padding: 8, marginBottom: 12 }}
+          />
+          <label style={{ color: "#366000" }}>Select Service</label>
+          <select
+            name="service"
+            value={form.service}
+            onChange={handleInputChange}
+            style={{ width: "100%", padding: 8, marginBottom: 12 }}
           >
-            Submit Booking
-          </Button>
+            <option value="">-- Choose a service --</option>
+            {servicesList.map((service, i) => (
+              <option key={i} value={service}>
+                {service}
+              </option>
+            ))}
+          </select>
+          <label style={{ color: "#366000" }}>Preferred Date</label>
+          <input
+            type="date"
+            name="date"
+            value={form.date}
+            onChange={handleInputChange}
+            style={{ width: "100%", padding: 8, marginBottom: 16 }}
+          />
+          <button
+            onClick={handleBookNow}
+            style={{ width: "100%", padding: 12, backgroundColor: "#366000", color: "white", border: "none", borderRadius: 6 }}
+          >
+            Book Now
+          </button>
+        </>
+      ) : (
+        <div style={{ textAlign: "center", backgroundColor: "#f9fff0", padding: 20, borderRadius: 8 }}>
+          <h3 style={{ color: "#366000" }}>Enter Verification Code</h3>
+          <div style={{ display: "flex", justifyContent: "center", gap: 8, marginBottom: 12 }}>
+            {verificationCode.map((digit, i) => (
+              <input
+                key={i}
+                id={`code-${i}`}
+                type="text"
+                maxLength={1}
+                value={digit}
+                onChange={(e) => handleCodeChange(i, e.target.value)}
+                style={{ width: 40, height: 40, fontSize: 24, textAlign: "center", borderRadius: 6, border: "1px solid #366000" }}
+              />
+            ))}
+          </div>
+          <p style={{ color: "#366000", marginBottom: 12 }}>
+            {countdown > 0 ? (
+              <>Code expires in {countdown} seconds</>
+            ) : (
+              <button
+                onClick={handleResend}
+                style={{ background: "none", border: "none", color: "#366000", cursor: "pointer", textDecoration: "underline" }}
+              >
+                Resend Code
+              </button>
+            )}
+          </p>
+          <button
+            onClick={handleConfirmBooking}
+            style={{ width: "100%", padding: 12, backgroundColor: "#274800", color: "white", border: "none", borderRadius: 6 }}
+          >
+            Confirm Booking
+          </button>
         </div>
-      </Form>
-    </Container>
+      )}
+    </div>
   );
 };
 
-export default Booking;
-
+export default BookingForm;
